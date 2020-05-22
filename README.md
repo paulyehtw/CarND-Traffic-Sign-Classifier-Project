@@ -240,6 +240,7 @@ So the hyperparameters for training:
 * `AdamOptimizer` is utilized as optimizer
 
 Training result of accuracy over epoch:
+Validation Accuracy at epoch 100 = **0.931**
 <p align="center">
   <img  src="demo_images/learning_curve.png">
 </p>
