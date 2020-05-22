@@ -124,6 +124,7 @@ X_test_normalized = (X_test_gray - 128)/128
   <img  src="demo_images/lenet.jpg">
 </p>
 LeNet architecture is defined as follows:
+
 ```
 def LeNet(x, n_classes):    
     # Arguments used for tf.truncated_normal, randomly defines variables for the weights and biases for each layer
@@ -190,6 +191,7 @@ def LeNet(x, n_classes):
 ```
 
 The shape of each layer of LeNet:
+
 ```
 conv1 shape :  (?, 28, 28, 6)
 conv1 shape after max pooling :  (?, 14, 14, 6)
@@ -203,6 +205,7 @@ Output logits shape :  (?, 43)
 
 #### Model Training
 Then the training pipeline is designed as follows:
+
 ```
 logits = LeNet(x, n_classes) # Feedforward
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(labels=one_hot_y, logits=logits) # Calculate error
@@ -212,6 +215,7 @@ training_operation = optimizer.minimize(loss_operation) # minimized the error
 ```
 
 Lastly the `evaluation` function needs to check the average tween predicted logits and label for each batch
+
 ```
 correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(one_hot_y, 1))
 accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -229,6 +233,7 @@ def evaluate(X_data, y_data):
 
 #### Solution Approach
 So the hyperparameters for training:
+
 * `learning_rate` = 0.0005
 * `EPOCH` is 100, if validation accuracy reaches 0.95 training will stop
 * `BATCH_SIZE` = 128
