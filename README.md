@@ -240,6 +240,8 @@ So the hyperparameters for training:
 * `AdamOptimizer` is utilized as optimizer
 
 Training result of accuracy over epoch:
+
+Validation Accuracy at epoch 100 = **0.931**
 <p align="center">
   <img  src="demo_images/learning_curve.png">
 </p>
@@ -272,7 +274,9 @@ with tf.Session() as sess:
     print("New Images Accuracy = {:.3f}".format(new_img_accuracy))
 ```
 
-Prediction result: `New Images Accuracy = 1.000`
+Prediction result: 
+
+New Images Accuracy = **1.000**
 
 #### Model Certainty - Softmax Probabilities
 Output Top 5 Softmax Probabilities For Each Image:
