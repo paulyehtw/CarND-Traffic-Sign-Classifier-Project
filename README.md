@@ -70,6 +70,15 @@ Dependencies:
 ## Dataset Exploration
 #### Dataset Summary
 First load 3 datasets - train, valid and test sets
+```
+X_train shape :  (34799, 32, 32, 3)
+y_train shape :  (34799,)
+X_valid shape :  (4410, 32, 32, 3)
+y_valid shape :  (4410,)
+X_test shape :  (12630, 32, 32, 3)
+y_test shape :  (12630,)
+```
+
 Then print the summary.
 ```
 Number of total examples = 51839
@@ -99,7 +108,10 @@ Display randomly the training set data with label
 ## **Design and Test a Model Architecture**
 #### Preprocessing
 Before putting training data into pipeline, data needs to be pre-processed
-First step, grayscaled:
+
+First step, grayscale images because the input to LeNet has to be `32x32x1`.
+
+Grayscaling can be done by averaging 3 color channel values:
 ```
 X_train_gray = np.sum(X_train/3, axis=3, keepdims=True)
 X_valid_gray = np.sum(X_valid/3, axis=3, keepdims=True)
@@ -109,7 +121,11 @@ X_test_gray = np.sum(X_test/3, axis=3, keepdims=True)
   <img  src="demo_images/random_plot_train_gray.png">
 </p>
 
-Then normalized:
+Then normalize the datasets to (-1,1).
+
+The grayscaled images has values between (0, 255), now we subtract them by 128 and divide them by 128,
+
+it can make all images all have zero mean and the same variance, which is better for training
 ```
 X_train_normalized = (X_train_gray - 128)/128
 X_valid_normalized = (X_valid_gray - 128)/128
@@ -123,6 +139,17 @@ X_test_normalized = (X_test_gray - 128)/128
 <p align="center">
   <img  src="demo_images/lenet.jpg">
 </p>
+
+The pipeline for training a LeNet model:
+
+* Data preprocessing - **grayscale** and **normalize** loaded data
+* Design the model according to `LeNet` architecture
+* Selection of the adequate optimizer - `AdamOptimizer` is chosen as it works similarly as stochastic gradient descent
+* Tunning of hyperparameters - Finetuning `Learning rate`, `Number of epochs`, `Batch size` and `Early stop threshold`
+* Model training - design the process as follows
+* Model's assessment metric/benchmark - monitor the validation accuracy and check test set accuracy in the end
+* If overfitting and/or underfitting occurs: I tried **increasing epoch number** and **decreasing learning** rate when I ran into underfitting issue.
+
 LeNet architecture is defined as follows:
 
 ```
@@ -204,7 +231,8 @@ Output logits shape :  (?, 43)
 ```
 
 #### Model Training
-Then the training pipeline is designed as follows:
+
+Training pipeline is designed as follows:
 
 ```
 logits = LeNet(x, n_classes) # Feedforward
@@ -283,3 +311,7 @@ Output Top 5 Softmax Probabilities For Each Image:
 <p align="center">
   <img  src="demo_images/softmax_probabilities.png">
 </p>
+
+**Discussion**
+
+New images might be misclassified if they are in the relatively rare class in the training data, in the histogram of labels above, we can see some classes like 1, 19 or 42 that have much less occurance than others. So the model might find it hard to learn the features of those class, one solution is to get more data for those classes.
